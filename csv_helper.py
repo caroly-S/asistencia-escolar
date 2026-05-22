@@ -146,3 +146,30 @@ def obtener_asistencia_por_grupo(grado, seccion, fecha):
 
 
     return registros
+     asistencia = obtener_asistencia()
+    encontrado = False
+
+    i = 0
+    while i < len(asistencia):
+        reg = asistencia[i]
+
+        if reg["estudiante_id"] == str(estudiante_id) and reg["fecha"] == fecha:
+ 
+            asistencia[i]["estado"]      = estado
+            asistencia[i]["observacion"] = observacion
+            encontrado = True
+            break
+
+        i += 1
+
+   
+    if not encontrado:
+        
+        asistencia.append({
+            "estudiante_id": str(estudiante_id),
+            "fecha":         fecha,
+            "estado":        estado,
+            "observacion":   observacion
+        })
+
+    escribir_csv(RUTA_ASISTENCIA, CABECERA_ASISTENCIA, asistencia)
