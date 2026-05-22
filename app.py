@@ -91,7 +91,43 @@ def nuevo_estudiante():
     return redirect(url_for("estudiantes"))
 
 
+@app.route("/estudiantes/editar/<id>", methods=["GET", "POST"])
 
+def editar_estudiante(id):
+
+    if "usuario" not in session:
+        return redirect(url_for("login"))
+    
+    if request.method == "POST":
+        csv_helper.actualizar_estudiante(
+            id,
+            request.form["apellidos"],
+            request.form["nombres"],
+            request.form["dni"],
+            request.form["grado"],
+            request.form["seccion"],
+            request.form["turno"]
+        )
+        return redirect(url_for("estudiantes"))
+    
+    e = csv_helper.buscar_estudiante_por_id(id)
+
+    if e is None:
+        return redirect(url_for("estudiantes"))
+    
+    return render_template("editar.html", e=e)
+
+
+@app.route("/estudiantes/eliminar/<id>")
+
+def eliminar_estudiante(id):
+
+    if "usuario" not in session:
+        return redirect(url_for("login"))
+    
+    csv_helper.eliminar_estudiante(id)
+
+    return redirect(url_for("estudiantes"))
 
 
 if __name__ == "__main__":
