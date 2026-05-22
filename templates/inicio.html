@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block contenido %}
+
+<h1>Panel principal — {{ hoy }}</h1>
+
+<div class="tarjetas">
+    <div class="tarjeta">
+        <p class="numero">{{ total }}</p>
+        <p>Total estudiantes</p>
+    </div>
+    <div class="tarjeta">
+        <p class="numero verde">{{ resumen.presentes }}</p>
+        <p>Presentes hoy</p>
+    </div>
+    <div class="tarjeta">
+        <p class="numero amarillo">{{ resumen.tardanzas }}</p>
+        <p>Tardanzas hoy</p>
+    </div>
+    <div class="tarjeta">
+        <p class="numero rojo">{{ resumen.faltas }}</p>
+        <p>Faltas hoy</p>
+    </div>
+</div>
+
+{% endblock %}

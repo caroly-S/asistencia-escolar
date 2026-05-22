@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Asistencia Escolar</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: #f0f2f5; }
+        nav { background: #1a3c5e; padding: 12px 24px; display: flex; gap: 20px; align-items: center; }
+        nav a { color: white; text-decoration: none; font-size: 14px; }
+        nav a:hover { text-decoration: underline; }
+        .marca { color: #ffffff; font-weight: bold; font-size: 16px; margin-right: auto; }
+        main { padding: 24px; max-width: 1000px; margin: 0 auto; }
+        h1 { font-size: 22px; margin-bottom: 20px; color: #1a3c5e; }
+        .tarjetas { display: flex; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
+        .tarjeta { background: white; border-radius: 10px; padding: 20px 28px; min-width: 160px; text-align: center; border: 1px solid #ddd; }
+        .numero { font-size: 36px; font-weight: bold; color: #1a3c5e; }
+        .verde  { color: #2e7d32 !important; }
+        .rojo   { color: #c62828 !important; }
+        .amarillo { color: #e65100 !important; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
+        th { background: #1a3c5e; color: white; padding: 10px 14px; text-align: left; font-size: 13px; }
+        td { padding: 9px 14px; border-bottom: 1px solid #eee; font-size: 14px; }
+        tr:hover td { background: #f5f8ff; }
+        input, select { padding: 8px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+        button, .btn { padding: 8px 18px; background: #1a3c5e; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; text-decoration: none; display: inline-block; }
+        button:hover, .btn:hover { background: #12294a; }
+        .btn-eliminar { background: #00c853; }
+        .btn-eliminar:hover { background: #007206; }
+        .formulario { background: white; padding: 18px; border-radius: 10px; margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; border: 1px solid #ddd; }
+        .formulario label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: #555; }
+        .error { color: #c62828; margin-bottom: 12px; font-size: 14px; }
+        .badge-P { color: #ffffff; font-weight: bold; }
+        .badge-T { color: #ffffff; font-weight: bold; }
+        .badge-F { color: #ffffff; font-weight: bold; }
+        .badge-J { color: #ffffff; font-weight: bold; }
+        .caja-login { max-width: 360px; margin: 80px auto; background: white; padding: 32px; border-radius: 12px; border: 1px solid #ddd; }
+        .caja-login h2 { margin-bottom: 20px; color: #1a3c5e; }
+        .caja-login label { display: block; margin: 10px 0 4px; font-size: 14px; }
+        .caja-login input { width: 100%; }
+        .caja-login button { width: 100%; margin-top: 14px; padding: 10px; }
+        details summary { cursor: pointer; color: #1a3c5e; font-weight: bold; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+{% if session.usuario %}
+<nav>
+    <span class="marca">📋 Asistencia Escolar</span>
+    <a href="/dashboard">Inicio</a>
+    <a href="/estudiantes">Estudiantes</a>
+    <a href="/asistencia">Asistencia</a>
+    <a href="/reportes">Reportes</a>
+    <a href="/logout">Salir ({{ session.usuario }})</a>
+</nav>
+{% endif %}
+
+<main>
+    {% block contenido %}{% endblock %}
+</main>
+
+</body>
+</html>

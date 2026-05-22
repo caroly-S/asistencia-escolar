@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block contenido %}
+
+<div class="caja-login">
+    <h2>🎒 Iniciar sesión</h2>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <label>Usuario</label>
+        <input type="text" name="usuario" placeholder="admin" required>
+
+        <label>Contraseña</label>
+        <input type="password" name="password" placeholder="••••••" required>
+
+        <button type="submit">Ingresar</button>
+    </form>
+</div>
+
+{% endblock %}
