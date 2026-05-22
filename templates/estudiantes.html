@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block contenido %}
+
+
+<h1>Estudiantes ({{ total }} encontrados)</h1>
+
+
+<details>
+    <summary>➕ Registrar nuevo estudiante</summary>
+    <form method="POST" action="/estudiantes/nuevo" class="formulario">
+        <label>Apellidos <input name="apellidos" placeholder="García López" required></label>
+        <label>Nombres   <input name="nombres"   placeholder="Juan Carlos"  required></label>
+        <label>DNI       <input name="dni"        placeholder="74521836" maxlength="8" required></label>
+        <label>Grado
+            <select name="grado">
+                <option>1ro</option><option>2do</option><option>3ro</option>
+                <option>4to</option><option>5to</option>
+            </select>
+        </label>
+        <label>Sección
+            <select name="seccion">
+                <option>A</option><option>B</option><option>C</option>
+            </select>
+        </label>
+        <label>Turno
+            <select name="turno">
+                <option>Mañana</option><option>Tarde</option>
+            </select>
+        </label>
+        <button type="submit">Guardar</button>
+    </form>
+</details>
+
+
+<form method="GET" class="formulario">
+    <label>Buscar <input name="buscar" value="{{ buscar }}" placeholder="Nombre o DNI..."></label>
+    <label>Grado
+        <select name="grado">
+            <option value="">Todos</option>
+            <option>1ro</option><option>2do</option><option>3ro</option>
+            <option>4to</option><option>5to</option>
+        </select>
+    </label>
+    <button type="submit">Buscar</button>
+</form>
+
+
+
+
+<table>
+    <thead>
+        <tr>
+            <th>#</th><th>Apellidos y nombres</th><th>DNI</th>
+            <th>Grado</th><th>Sección</th><th>Turno</th><th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for e in estudiantes %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ e.apellidos }}, {{ e.nombres }}</td>
+            <td>{{ e.dni }}</td>
+            <td>{{ e.grado }}</td>
+            <td>{{ e.seccion }}</td>
+            <td>{{ e.turno }}</td>
+            <td>
+                <a href="/estudiantes/editar/{{ e.id }}" class="btn">Editar</a>
+                <a href="/estudiantes/eliminar/{{ e.id }}"
+                   onclick="return confirm('¿Eliminar a {{ e.nombres }}?')"
+                   class="btn btn-eliminar">Eliminar</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" style="text-align:center;padding:20px;color:#999;">
+            No hay estudiantes registrados.
+        </td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

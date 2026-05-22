@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block contenido %}
+
+<h1>Marcar asistencia</h1>
+
+
+<form method="GET" class="formulario">
+    <label>Fecha   <input type="date" name="fecha" value="{{ fecha }}"></label>
+    <label>Grado
+        <select name="grado">
+            {% for g in ["1ro","2do","3ro","4to","5to"] %}
+            <option {% if g == grado %}selected{% endif %}>{{ g }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>Sección
+        <select name="seccion">
+            {% for s in ["A","B","C"] %}
+            <option {% if s == seccion %}selected{% endif %}>{{ s }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <button type="submit">Cargar lista</button>
+</form>
+
+
+
+
+<form method="POST" action="/asistencia/guardar">
+    <input type="hidden" name="fecha"   value="{{ fecha }}">
+    <input type="hidden" name="grado"   value="{{ grado }}">
+    <input type="hidden" name="seccion" value="{{ seccion }}">
+
+    <table>
+        <thead>
+            <tr>
+                <th>Estudiante</th>
+                <th class="badge-P">P Presente</th>
+                <th class="badge-T">T Tardanza</th>
+                <th class="badge-F">F Falta</th>
+                <th class="badge-J">J Justificado</th>
+                <th>Observación</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in estudiantes %}
+            {% set reg = registros.get(e.id) %}
+            <tr>
+                <td>{{ e.apellidos }}, {{ e.nombres }}</td>
+                {% for estado in ["P","T","F","J"] %}
+                <td style="text-align:center">
+                    <input type="radio" name="estado_{{ e.id }}" value="{{ estado }}"
+                        {% if reg and reg.estado == estado %}checked{% endif %} required>
+                </td>
+                {% endfor %}
+                <td>
+                    <input type="text" name="obs_{{ e.id }}"
+                           value="{{ reg.observacion if reg else '' }}"
+                           placeholder="opcional" style="width:140px">
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6" style="text-align:center;padding:20px;color:#999;">
+                No hay estudiantes en {{ grado }} sección {{ seccion }}.
+            </td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if estudiantes %}
+    <button type="submit">💾 Guardar asistencia</button>
+    {% endif %}
+</form>
+
+{% endblock %}

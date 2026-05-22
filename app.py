@@ -7,17 +7,19 @@ app.secret_key = "clave2025"
 
 USUARIOS = [
     {"usuario": "caroly",    "password": "123"},
-    {"usuario": "christian", "password": "dtyinop1"},
+    {"usuario": "christian", "password": "456"},
 ]
 
 def validar_login(usuario, password):
     for u in USUARIOS:
+
         if u["usuario"] == usuario and u["password"] == password:
             return True
     return False
 
 
 @app.route("/")
+
 def inicio():
     if "usuario" in session:
         return redirect(url_for("dashboard"))
@@ -25,6 +27,7 @@ def inicio():
 
 
 @app.route("/login", methods=["GET", "POST"])
+
 def login():
     error = None
     if request.method == "POST":
@@ -47,7 +50,7 @@ def logout():
 @app.route("/dashboard")
 
 def dashboard():
-    
+
     if "usuario" not in session:
         return redirect(url_for("login"))
     hoy     = date.today().isoformat()
