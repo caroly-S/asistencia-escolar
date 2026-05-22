@@ -49,4 +49,33 @@ def escribir_csv(ruta, cabecera, registros):
         # for escribe cada registro como una fila
         for registro in registros:
             escritor.writerow(registro)
+    
+def obtener_estudiantes():
+
+    return leer_csv(RUTA_ESTUDIANTES, CABECERA_ESTUDIANTES)
+
+
+def buscar_estudiante_por_id(id):
+   
+    estudiantes = obtener_estudiantes()
+
+    
+    for e in estudiantes:
+        if e["id"] == str(id):     
+            return e
+
+    return None
+
+
+def buscar_estudiante_por_dni(dni):
+
+    
+    estudiantes = obtener_estudiantes()
+
+    for e in estudiantes:
+        
+        if e["dni"] == dni.strip():
+            return e
+
+    return None
 
