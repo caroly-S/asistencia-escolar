@@ -129,6 +129,55 @@ def eliminar_estudiante(id):
 
     return redirect(url_for("estudiantes"))
 
+@app.route("/asistencia")
+
+def asistencia():
+
+    if "usuario" not in session:
+        return redirect(url_for("login"))
+    
+    hoy     = date.today().isoformat()
+    fecha   = request.args.get("fecha",   hoy)
+    grado   = request.args.get("grado",   "1ro")
+    seccion = request.args.get("seccion", "A")
+
+    
+    todos   = csv_helper.filtrar_estudiantes(grado=grado)
+
+    lista   = []
+
+    for e in todos:
+        if e["seccion"] == seccion:
+            lista.append(e)
+
+    registros = csv_helper.obtener_asistencia_por_grupo(grado, seccion, fecha)
+
+    return render_template("asistencia.html",
+        estudiantes=lista, registros=registros,
+        fecha=fecha, grado=grado, seccion=seccion)
+
+
+@app.route("/asistencia/guardar", methods=["POST"])
+
+def guardar_asistencia():
+
+    if "usuario" not in session:
+        return redirect(url_for("login"))
+    
+    fecha   = request.form["fecha"]
+    grado   = request.form["grado"]
+    seccion = request.form["seccion"]
+
+    for clave, valor in request.form.items():
+        
+        if clave.startswith("estado_"):
+            partes      = clave.split("_")
+            est_id      = partes[1]
+            estado      = valor
+            observacion = request.form.get("obs_" + est_id, "")
+            csv_helper.guardar_asistencia(est_id, fecha, estado, observacion)
+
+    return redirect(url_for("asistencia", fecha=fecha, grado=grado, seccion=seccion))
 
 if __name__ == "__main__":
     csv_helper.leer_csv("data/estudiantes.csv", csv_helper.CABECERA_ESTUDIANTES)
