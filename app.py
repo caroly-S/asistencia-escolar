@@ -179,6 +179,19 @@ def guardar_asistencia():
 
     return redirect(url_for("asistencia", fecha=fecha, grado=grado, seccion=seccion))
 
+
+@app.route("/reportes")
+
+def reportes():
+    if "usuario" not in session:
+        return redirect(url_for("login"))
+    
+    resumen = csv_helper.resumen_por_grado()
+    
+    return render_template("reportes.html", resumen=resumen)
+
+
+
 if __name__ == "__main__":
     csv_helper.leer_csv("data/estudiantes.csv", csv_helper.CABECERA_ESTUDIANTES)
     csv_helper.leer_csv("data/asistencia.csv",  csv_helper.CABECERA_ASISTENCIA)
