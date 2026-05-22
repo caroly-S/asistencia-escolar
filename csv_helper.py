@@ -79,3 +79,70 @@ def buscar_estudiante_por_dni(dni):
 
     return None
 
+def eliminar_estudiante(id):
+    
+    estudiantes = obtener_estudiantes()
+
+    nueva_lista = []
+    for e in estudiantes:
+        if e["id"] != str(id):
+            nueva_lista.append(e)
+
+    escribir_csv(RUTA_ESTUDIANTES, CABECERA_ESTUDIANTES, nueva_lista)
+
+    
+    eliminar_asistencia_por_estudiante(id)
+
+
+def filtrar_estudiantes(buscar="", grado=""):
+    
+    estudiantes = obtener_estudiantes()
+    resultado   = []
+
+    for e in estudiantes:
+        nombre_completo = e["apellidos"] + " " + e["nombres"]
+
+        
+        coincide_texto = buscar.lower() in nombre_completo.lower() \
+                      or buscar in e["dni"]
+
+       
+        if buscar == "" and grado == "":
+            resultado.append(e)
+        elif buscar != "" and grado == "" and coincide_texto:
+            resultado.append(e)
+        elif buscar == "" and grado != "" and e["grado"] == grado:
+            resultado.append(e)
+        elif buscar != "" and grado != "" and coincide_texto and e["grado"] == grado:
+            resultado.append(e)
+
+
+    return resultado
+
+
+
+def obtener_asistencia():
+    
+    return leer_csv(RUTA_ASISTENCIA, CABECERA_ASISTENCIA)
+
+
+def obtener_asistencia_por_grupo(grado, seccion, fecha):
+   
+    asistencia   = obtener_asistencia()
+    estudiantes  = filtrar_estudiantes(grado=grado)
+    registros    = {}
+
+   
+    for e in estudiantes:
+
+        if e["seccion"] != seccion:
+            continue  
+
+        for reg in asistencia:
+
+            if reg["estudiante_id"] == e["id"] and reg["fecha"] == fecha:
+                registros[e["id"]] = reg
+                break   
+
+
+    return registros
