@@ -45,14 +45,53 @@ def logout():
 
 
 @app.route("/dashboard")
+
 def dashboard():
+    
     if "usuario" not in session:
         return redirect(url_for("login"))
     hoy     = date.today().isoformat()
-    #resumen = csv_helper.calcular_resumen(hoy)
-    #total   = len(csv_helper.obtener_estudiantes())
-    # TODO: Replace after create helper methods
-    return render_template("inicio.html", total=0, resumen=0, hoy=hoy)
+    resumen = csv_helper.calcular_resumen(hoy)
+    total   = len(csv_helper.obtener_estudiantes())
+
+    return render_template("inicio.html", total=total, resumen=resumen, hoy=hoy)
+
+
+@app.route("/estudiantes")
+
+def estudiantes():
+
+    if "usuario" not in session:
+        return redirect(url_for("login"))
+    buscar = request.args.get("buscar", "")
+    grado  = request.args.get("grado",  "")
+    lista  = csv_helper.filtrar_estudiantes(buscar, grado)
+
+
+    return render_template("estudiantes.html",
+        estudiantes=lista, buscar=buscar,
+        grado=grado, total=len(lista))
+
+
+@app.route("/estudiantes/nuevo", methods=["POST"])
+
+def nuevo_estudiante():
+
+    if "usuario" not in session:
+        return redirect(url_for("login"))
+    csv_helper.agregar_estudiante(
+        request.form["apellidos"],
+        request.form["nombres"],
+        request.form["dni"],
+        request.form["grado"],
+        request.form["seccion"],
+        request.form["turno"]
+    )
+
+    return redirect(url_for("estudiantes"))
+
+
+
 
 
 if __name__ == "__main__":
