@@ -147,12 +147,14 @@ def filtrar_estudiantes(buscar="", grado=""):
     resultado   = []
 
     for e in estudiantes:
+
+
         nombre_completo = e["apellidos"] + " " + e["nombres"]
 
         coincide_texto = buscar.lower() in nombre_completo.lower() \
                       or buscar in e["dni"]
 
-      
+
         if buscar == "" and grado == "":
             resultado.append(e)
         elif buscar != "" and grado == "" and coincide_texto:
@@ -262,3 +264,43 @@ def calcular_resumen(fecha=""):
     }
 
 
+def resumen_por_grado():
+    """
+    Calcula el resumen de asistencia agrupado por grado.
+    Devuelve una lista de diccionarios, uno por grado.
+    """
+    grados     = ["1ro", "2do", "3ro", "4to", "5to"]
+    asistencia = obtener_asistencia()
+    resultado  = []
+
+
+    for grado in grados:
+        estudiantes_grado = filtrar_estudiantes(grado=grado)
+        ids_grado = []
+
+        for e in estudiantes_grado:
+            ids_grado.append(e["id"])
+
+        presentes  = 0
+        tardanzas  = 0
+        faltas     = 0
+
+
+        for reg in asistencia:
+            if reg["estudiante_id"] in ids_grado:
+                if reg["estado"] == "P":
+                    presentes += 1
+                elif reg["estado"] == "T":
+                    tardanzas += 1
+                elif reg["estado"] == "F":
+                    faltas += 1
+
+        resultado.append({
+            "grado":     grado,
+            "alumnos":   len(estudiantes_grado),
+            "presentes": presentes,
+            "tardanzas": tardanzas,
+            "faltas":    faltas
+        })
+
+    return resultado

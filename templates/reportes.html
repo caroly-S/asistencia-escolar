@@ -5,20 +5,15 @@
 
 <table>
     <thead>
-
         <tr>
             <th>Grado</th><th>Alumnos</th>
             <th class="badge-P">Presentes</th>
             <th class="badge-T">Tardanzas</th>
             <th class="badge-F">Faltas</th>
         </tr>
-
     </thead>
-
     <tbody>
-
         {% for fila in resumen %}
-
         <tr>
             <td>{{ fila.grado }} de secundaria</td>
             <td>{{ fila.alumnos }}</td>
@@ -26,11 +21,8 @@
             <td class="amarillo">{{ fila.tardanzas }}</td>
             <td class="rojo">{{ fila.faltas }}</td>
         </tr>
-
         {% endfor %}
-
     </tbody>
-    
 </table>
 
 {% endblock %}

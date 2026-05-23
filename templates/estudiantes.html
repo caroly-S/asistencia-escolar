@@ -1,9 +1,7 @@
 {% extends "base.html" %}
 {% block contenido %}
 
-
 <h1>Estudiantes ({{ total }} encontrados)</h1>
-
 
 <details>
     <summary>➕ Registrar nuevo estudiante</summary>
@@ -31,7 +29,7 @@
     </form>
 </details>
 
-
+<!-- Buscador -->
 <form method="GET" class="formulario">
     <label>Buscar <input name="buscar" value="{{ buscar }}" placeholder="Nombre o DNI..."></label>
     <label>Grado
@@ -43,8 +41,6 @@
     </label>
     <button type="submit">Buscar</button>
 </form>
-
-
 
 
 <table>
